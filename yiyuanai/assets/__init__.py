@@ -1,5 +1,5 @@
 """
-pyJianYingDraft 的资源管理模块，提供集中管理资源文件的方式，避免硬编码路径
+yiyuanai 的资源管理模块，提供集中管理资源文件的方式，避免硬编码路径
 """
 
 from pathlib import Path

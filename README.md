@@ -1,4 +1,4 @@
-# pyJianYingDraft
+# yiyuanai
 ### 轻量、灵活、易上手的Python剪映草稿生成及导出工具，构建全自动视频剪辑/混剪流水线！
 
 > 🧪 本项目的**CapCut版本**正在开发中，欢迎关注[CapCut版本仓库](https://github.com/GuanYixuan/pyCapCut)
@@ -62,16 +62,16 @@
 - ☑️ [导入`.srt`文件](#导入字幕)生成字幕并批量设置格式
 
 # 安装
-pyJianYingDraft现已支持pip安装（不含demo），推荐使用开发时测试的Python版本3.8或3.11
+yiyuanai现已支持pip安装（不含demo），推荐使用开发时测试的Python版本3.8或3.11
 ```
-pip install pyJianYingDraft
+pip install yiyuanai
 ```
 
 ### 跨平台兼容性
 - **Windows**：支持包括草稿生成、模板模式和自动导出在内的所有功能（具体可能受到剪映版本限制）
 - **Linux/MacOS**：支持草稿生成和模板模式，但**不支持自动导出**，且注意**生成的草稿仍然需要在Windows版剪映下导出**。
 
-> ℹ 如遇安装后import失败, 可能与uiautomation的兼容性问题有关，参见[相关issue](https://github.com/GuanYixuan/pyJianYingDraft/issues/12)
+> ℹ 如遇安装后import失败, 可能与uiautomation的兼容性问题有关，参见[相关issue](https://github.com/GuanYixuan/yiyuanai/issues/12)
 
 # 快速上手
 例程`demo.py`将创建包含音视频素材和一行文本的剪映草稿文件，并且添加了音频淡入、视频入场动画、转场效果和文本气泡/花字。
@@ -107,7 +107,7 @@ pip install pyJianYingDraft
 推荐使用`DraftFolder`来管理剪映的草稿文件夹（可以在剪映的`全局设置`-`草稿位置`中查询），这样能够方便地根据已有模板生成新草稿。
 
 ```python
-import pyJianYingDraft as draft
+import yiyuanai as draft
 
 draft_folder = draft.DraftFolder("<剪映草稿文件夹>")  # 一般形如 ".../JianyingPro Drafts"
 script = draft_folder.duplicate_as_template("模板草稿", "新草稿")  # 复制"模板草稿"，并命名为"新草稿"，同时打开新草稿供编辑
@@ -117,7 +117,7 @@ script = draft_folder.duplicate_as_template("模板草稿", "新草稿")  # 复�
 script.save()  # 保存你的"新草稿"
 ```
 
-为了最大限度地兼容模板中的复杂特性，**导入的轨道与pyJianYingDraft创建的轨道是分离开的**，具体地讲：
+为了最大限度地兼容模板中的复杂特性，**导入的轨道与yiyuanai创建的轨道是分离开的**，具体地讲：
 
 - 除下述替换功能外，不能在导入的轨道上添加片段、转场、淡入淡出、特效等
 - **仍然可以创建新的轨道，并在其上添加片段等**，就像非模板模式一样
@@ -129,7 +129,7 @@ script.save()  # 保存你的"新草稿"
 `DraftFolder`也有相应的方法来提取指定草稿的素材元数据。
 
 ```python
-import pyJianYingDraft as draft
+import yiyuanai as draft
 
 draft_folder = draft.DraftFolder("<剪映草稿文件夹>")
 draft_folder.inspect_material("草稿名称")
@@ -177,7 +177,7 @@ script.replace_material_by_name("audio.mp3", new_material)  # 替换名称为"au
 
 此过程分为两步：**选取轨道**和**替换素材**，以上方音频素材的替换为例：
 ```python
-from pyJianYingDraft import trange, ShrinkMode, ExtendMode
+from yiyuanai import trange, ShrinkMode, ExtendMode
 
 audio_track = script.get_imported_track(
     draft.TrackType.audio,                # 选取导入的音频轨道
@@ -257,15 +257,15 @@ target_script.import_track(
 
 > ℹ 本部分功能**在剪映专业版5.9和6.8中测试通过**
 
-> ℹ 有用户反映部分Python版本(如3.13)下`uiautomation`会出现依赖问题, 推荐使用3.8、3.10或3.11, [详见此处](https://github.com/GuanYixuan/pyJianYingDraft/issues/12)
+> ℹ 有用户反映部分Python版本(如3.13)下`uiautomation`会出现依赖问题, 推荐使用3.8、3.10或3.11, [详见此处](https://github.com/GuanYixuan/yiyuanai/issues/12)
 
 > ⚠️ 请**确认有导出草稿的相关权限(不使用VIP功能或已开通VIP)**, 否则可能陷入死循环
 
 导出利用`JianyingController`类进行，具体用法如下：
 
 ```python
-import pyJianYingDraft as draft
-from pyJianYingDraft import ExportResolution, ExportFramerate
+import yiyuanai as draft
+from yiyuanai import ExportResolution, ExportFramerate
 
 # 此前需要将剪映打开，并位于目录页
 ctrl = draft.JianyingController()
@@ -300,8 +300,8 @@ for name in draft_names:
 
 例如：
 ```python
-import pyJianYingDraft as draft
-from pyJianYingDraft import SEC, tim, trange
+import yiyuanai as draft
+from yiyuanai import SEC, tim, trange
 
 # 1秒钟
 assert 1000000 == SEC == tim("1s") == tim("0.01666667m")
@@ -324,8 +324,8 @@ assert seg.target_timerange.start + 2*SEC == seg.target_timerange.start + tim("2
 
 ```python
 import os
-import pyJianYingDraft as draft
-from pyJianYingDraft import trange, SEC
+import yiyuanai as draft
+from yiyuanai import trange, SEC
 
 # 假定已有草稿文件script（参见“快速上手”），创建三个轨道
 for i in range(3, 0, -1): # 倒序
@@ -394,7 +394,7 @@ script.add_segment(video_segment, "背景")
 
 下方的例子将创建一个视频片段，并设置其不透明度为0.5、打开水平翻转：
 ```python
-from pyJianYingDraft import ClipSettings
+from yiyuanai import ClipSettings
 video_segment = draft.VideoSegment(video_material,
                                    draft.Timerange(0, video_material.duration),      # 与素材等长
                                    clip_settings=ClipSettings(alpha=0.5,             # 不透明度为0.5
@@ -411,8 +411,8 @@ video_segment = draft.VideoSegment(video_material,
 下方的例子尝试使用两个不透明度关键帧模拟视频的淡出效果：
 ```python
 import os
-import pyJianYingDraft as draft
-from pyJianYingDraft import KeyframeProperty, SEC
+import yiyuanai as draft
+from yiyuanai import KeyframeProperty, SEC
 
 # 假定已有草稿文件script（参见“快速上手”），创建视频轨道
 script.add_track(draft.TrackType.video)
@@ -446,7 +446,7 @@ audio_segment.add_keyframe("0s", 0.6) # 片段开始时的音量为60%
 ### 蒙版
 蒙版的添加非常简单：调用`VideoSegment`的`add_mask`方法即可：
 ```python
-from pyJianYingDraft import MaskType
+from yiyuanai import MaskType
 
 # 添加一个线性蒙版，中心点在素材的(100, 0)像素处，顺时针旋转45度
 video_segment1.add_mask(MaskType.线性, center_x=100, rotation=45)
@@ -488,7 +488,7 @@ assert VideoSceneEffectType.from_name("__全息 扫描__") == VideoSceneEffectTy
 
 下方的例子为视频片段添加一个`全息扫描`特效，并且指定其`氛围`参数为（剪映中的）100，其余参数默认：
 ```python
-from pyJianYingDraft import VideoSceneEffectType
+from yiyuanai import VideoSceneEffectType
 
 video_segment.add_effect(VideoSceneEffectType.全息扫描,
                          [None, None, 100.0]) # 不设置前两个参数, 第三个参数（氛围）为100，其余参数也不设置
@@ -500,7 +500,7 @@ video_segment.add_effect(VideoSceneEffectType.全息扫描,
 与特效不同的是，滤镜只支持一个“滤镜强度”参数，且仅当所选滤镜能够调节强度时有效。
 
 ```python
-from pyJianYingDraft import FilterType
+from yiyuanai import FilterType
 
 video_segment1.add_filter(FilterType.原生肤, 10)  # 设置"原生肤"强度为10
 video_segment2.add_filter(FilterType.冰雪世界, 50)  # 设置"冰雪世界"强度为50
@@ -517,7 +517,7 @@ script.add_track(draft.TrackType.filter, "my_filter")  # 创建名为"my_filter"
 
 接下来便可使用`add_effect`和`add_filter`方法向这些轨道添加片段：
 ```python
-from pyJianYingDraft import VideoSceneEffectType, FilterType, trange
+from yiyuanai import VideoSceneEffectType, FilterType, trange
 
 # 在特效轨道上添加一个"胶片闪切"特效，持续5秒，并设置其参数
 script.add_effect(VideoSceneEffectType.胶片闪切, trange("0s", "5s"),
@@ -537,7 +537,7 @@ script.add_filter(FilterType.哈苏蓝, trange(0, script.duration),
 
 以下是为一个文本片段添加三种动画的例子：
 ```python
-from pyJianYingDraft import TextIntro, TextOutro, TextLoopAnim
+from yiyuanai import TextIntro, TextOutro, TextLoopAnim
 
 text_seg.add_animation(TextIntro.复古打字机).add_animation(TextOutro.弹簧)
 text_seg.add_animation(TextLoopAnim.色差故障)  # 注意：循环动画必须在出入场动画之后添加
@@ -550,8 +550,8 @@ text_seg.add_animation(TextLoopAnim.色差故障)  # 注意：循环动画必须
 
 例如：
 ```python
-import pyJianYingDraft as draft
-from pyJianYingDraft import FontType, TextStyle, ClipSettings
+import yiyuanai as draft
+from yiyuanai import FontType, TextStyle, ClipSettings
 
 # 带下划线、位置及大小类似字幕的浅蓝色文本
 seg1 = draft.TextSegment("Subtitle", trange("0s", "10s"),
@@ -583,7 +583,7 @@ seg2 = draft.TextSegment("这是一段很长的文本内容，当超过设定的
 
 例如：
 ```python
-import pyJianYingDraft as draft
+import yiyuanai as draft
 
 # 假定已有草稿文件script（参见“快速上手”）
 
